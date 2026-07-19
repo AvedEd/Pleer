@@ -18,15 +18,18 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
+
+    # Автоматически настраивает Gradle и создаёт нужные файлы в корне
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+
+    - name: Generate Gradle Wrapper
+      run: gradle wrapper
 
     - name: Grant execute permission for gradlew
-      # ВНИМАНИЕ: Если папка называется иначе, замените слово android на ваше имя папки
-      working-directory: ./android 
       run: chmod +x gradlew
 
     - name: Build with Gradle
-      working-directory: ./android
       run: ./gradlew assembleDebug
 
     - name: Upload APK Artifact
@@ -35,4 +38,3 @@ jobs:
         name: my-app-apk
         path: |
           **/build/outputs/apk/debug/*.apk
-
