@@ -21,13 +21,18 @@ jobs:
         cache: gradle
 
     - name: Grant execute permission for gradlew
+      # ВНИМАНИЕ: Если папка называется иначе, замените слово android на ваше имя папки
+      working-directory: ./android 
       run: chmod +x gradlew
 
     - name: Build with Gradle
+      working-directory: ./android
       run: ./gradlew assembleDebug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: my-app-apk
-        path: app/build/outputs/apk/debug/*.apk
+        path: |
+          **/build/outputs/apk/debug/*.apk
+
