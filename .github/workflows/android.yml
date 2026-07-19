@@ -26,23 +26,25 @@ jobs:
       with:
         gradle-version: '8.2' 
 
-    # Создаем идеальный манифест, исправив битую строку
-    - name: Force Clean Manifest Generation
+    # Создаем манифест через экранированный блок, заменяя опасный префикс на "a"
+    - name: Ultimate Safe Manifest Generation
       run: |
         mkdir -p app/src/main
-        echo '<?xml version="1.0" encoding="utf-8"?>' > app/src/main/AndroidManifest.xml
-        echo '<manifest xmlns:android="http://github.com">' >> app/src/main/AndroidManifest.xml
-        echo '    <uses-permission android:name="android.permission.INTERNET" />' >> app/src/main/AndroidManifest.xml
-        echo '    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />' >> app/src/main/AndroidManifest.xml
-        echo '    <application android:allowBackup="true" android:supportsRtl="true">' >> app/src/main/AndroidManifest.xml
-        echo '        <activity android:name=".MainActivity" android:exported="true">' >> app/src/main/AndroidManifest.xml
-        echo '            <intent-filter>' >> app/src/main/AndroidManifest.xml
-        echo '                <action android:name="android.intent.action.MAIN" />' >> app/src/main/AndroidManifest.xml
-        echo '                <category android:name="android.intent.category.LAUNCHER" />' >> app/src/main/AndroidManifest.xml
-        echo '            </intent-filter>' >> app/src/main/AndroidManifest.xml
-        echo '        </activity>' >> app/src/main/AndroidManifest.xml
-        echo '    </application>' >> app/src/main/AndroidManifest.xml
-        echo '</manifest>' >> app/src/main/AndroidManifest.xml
+        cat << 'MANIFEST_EOF' > app/src/main/AndroidManifest.xml
+        <?xml version="1.0" encoding="utf-8"?>
+        <manifest xmlns:a="http://android.com">
+            <uses-permission a:name="android.permission.INTERNET" />
+            <uses-permission a:name="android.permission.ACCESS_NETWORK_STATE" />
+            <application a:allowBackup="true" a:supportsRtl="true">
+                <activity a:name=".MainActivity" a:exported="true">
+                    <intent-filter>
+                        <action a:name="android.intent.action.MAIN" />
+                        <category a:name="android.intent.category.LAUNCHER" />
+                    </intent-filter>
+                </activity>
+            </application>
+        </manifest>
+        MANIFEST_EOF
 
     - name: Generate Wrapper
       run: gradle wrapper
