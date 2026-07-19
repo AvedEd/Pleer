@@ -1,7 +1,8 @@
-plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
+plugplugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
 }
+
 
 android {
     namespace "com.torrserv.pleer"
