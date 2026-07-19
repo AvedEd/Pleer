@@ -21,37 +21,23 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    # Умный поиск папки с Android-проектом и генерация gradlew
-    - name: Locate Project and Generate Gradle Wrapper
-      run: |
-        # Ищем, в какой папке лежит settings.gradle
-        TARGET_DIR=$(find . -name "settings.gradle" -o -name "settings.gradle.kts" | head -n 1 | xargs dirname)
-        
-        if [ -z "$TARGET_DIR" ] || [ "$TARGET_DIR" = "." ]; then
-          echo "Проект находится в корневой директории."
-          TARGET_DIR="."
-        else
-          echo "Проект найден в подпапке: $TARGET_DIR"
-        fi
-        
-        # Сохраняем путь для следующих шагов
-        echo "PROJECT_ROOT=$TARGET_DIR" >> $GITHUB_ENV
-        
-        # Заходим туда и генерируем gradlew
-        cd "$TARGET_DIR"
-        if [ ! -f "gradlew" ]; then
-          echo "Файл gradlew не найден, генерируем новый..."
-          gradle wrapper
-        fi
-        chmod +x gradlew
+    # Устанавливаем конкретную стабильную версию Gradle для сборки, чтобы избежать конфликтов с версией 9.x
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        gradle-version: '8.2' 
+
+    - name: Generate Wrapper
+      run: gradle wrapper
+
+    - name: Grant Execute Permission for Gradlew
+      run: chmod +x gradlew
 
     - name: Build Debug APK
-      run: |
-        cd ${{ env.PROJECT_ROOT }}
-        ./gradlew assembleDebug
+      run: ./gradlew assembleDebug
 
-    - name: Find and Upload Finished APK
+    - name: Upload Finished APK
       uses: actions/upload-artifact@v4
       with:
         name: Pleer-TV-Debug-APK
-        path: "**/build/outputs/apk/debug/*-debug.apk" # Ищет APK в любой подпапке сборки
+        path: app/build/outputs/apk/debug/app-debug.apk
