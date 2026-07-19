@@ -26,25 +26,25 @@ jobs:
       with:
         gradle-version: '8.2' 
 
-    # Создаем манифест через экранированный блок, заменяя опасный префикс на "a"
-    - name: Ultimate Safe Manifest Generation
+    # Генерируем стандартный манифест по точному пути
+    - name: Generate Clean Target Manifest
       run: |
         mkdir -p app/src/main
-        cat << 'MANIFEST_EOF' > app/src/main/AndroidManifest.xml
+        cat << 'EOF' > app/src/main/AndroidManifest.xml
         <?xml version="1.0" encoding="utf-8"?>
-        <manifest xmlns:a="http://android.com">
-            <uses-permission a:name="android.permission.INTERNET" />
-            <uses-permission a:name="android.permission.ACCESS_NETWORK_STATE" />
-            <application a:allowBackup="true" a:supportsRtl="true">
-                <activity a:name=".MainActivity" a:exported="true">
+        <manifest xmlns:android="http://github.com">
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <application android:allowBackup="true" android:supportsRtl="true">
+                <activity android:name=".MainActivity" android:exported="true">
                     <intent-filter>
-                        <action a:name="android.intent.action.MAIN" />
-                        <category a:name="android.intent.category.LAUNCHER" />
+                        <action android:name="android.intent.action.MAIN" />
+                        <category android:name="android.intent.category.LAUNCHER" />
                     </intent-filter>
                 </activity>
             </application>
         </manifest>
-        MANIFEST_EOF
+        EOF
 
     - name: Generate Wrapper
       run: gradle wrapper
