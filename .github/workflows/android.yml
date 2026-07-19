@@ -26,15 +26,13 @@ jobs:
       with:
         gradle-version: '8.2'
 
-    # Принудительно очищаем скрытый кэш репозитория и создаем новые файлы с нуля
     - name: Purge Broken Cache and Force Recreate
       run: |
-        rm -rf app/src/main/AndroidManifest.xml
-        rm -rf app/src/main/res/drawable/ic_launcher_foreground.xml
-        rm -rf app/src/main/res/mipmap/ic_launcher_foreground.xml
+        rm -f app/src/main/AndroidManifest.xml
+        rm -f app/src/main/res/drawable/ic_launcher_foreground.xml
+        rm -f app/src/main/res/mipmap/ic_launcher_foreground.xml
         mkdir -p app/src/main/res/drawable
         
-        # Создаем манифест безопасным способом
         cat << 'EOF' > app/src/main/AndroidManifest.xml
         <?xml version="1.0" encoding="utf-8"?>
         <manifest xmlns:android="http://github.com">
@@ -51,7 +49,6 @@ jobs:
         </manifest>
         EOF
 
-        # Создаем заглушку иконки
         cat << 'EOF' > app/src/main/res/drawable/ic_launcher_foreground.xml
         <?xml version="1.0" encoding="utf-8"?>
         <vector xmlns:android="http://github.com"
@@ -70,7 +67,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --no-build-cache --invalidate-caches
+      run: ./gradlew assembleDebug --no-build-cache
 
     - name: Upload Finished APK
       uses: actions/upload-artifact@v4
