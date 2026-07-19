@@ -26,28 +26,38 @@ jobs:
       with:
         gradle-version: '8.2'
 
-    # Восстанавливаем чистый манифест из Base64
+    # Самый надежный способ записи манифеста без искажения двоеточий
     - name: Create Valid AndroidManifest
       run: |
         mkdir -p app/src/main
-        echo "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPG1hbmlmZXN0IHhtbG5zOmFuZHJvaWQ9Imh0dHA6Ly9zY2hlbWFzLmFuZHJvaWQuY29tL2Fway9yZXMvYW5kcm9pZCI+CiAgICA8dXNlcy1wZXJtaXNzaW9uIGFuZHJvaWQ6bmFtZT0iYW5kcm9pZC5wZXJtaXNzaW9uLklOVEVSTkVUIiAvPgogICAgPHVzZXMtcGVybWlzc2lvbiBhbmRyb2lkOm5hbWU9ImFuZHJvaWQucGVybWlzc2lvbi5BQ0NFU1NfTkVUV09SS19TVEFURSIgLz4KICAgIDxhcHBsaWNhdGlvbiBhbmRyb2lkOmFsbG93QmFja3VwPSJ0cnVlIiBhbmRyb2lkOnN1cHBvcnRzUnRsPSJ0cnVlIj4KICAgICAgICA8YWN0aXZpdHkgYW5kcm9pZDpuYW1lPSIuTWFpbkFjdGl2aXR5IiBhbmRyb2lkOmV4cG9ydGVkPSJ0cnVlIj4KICAgICAgICAgICAgPGludGVudC1maWx0ZXI+CiAgICAgICAgICAgICAgICA8YWN0aW9uIGFuZHJvaWQ6bmFtZT0iYW5kcm9pZC5pbnRlbnQuYWN0aW9uLk1BSU4iIC8+CiAgICAgICAgICAgICAgICA8Y2F0ZWdvcnkgYW5kcm9pZDpuYW1lPSJhbmRyb2lkLmludGVudC5jYXRlZ29yeS5MQVVOQ0hFUiIgLz4KICAgICAgICAgICAgPC9pbnRlbnQtZmlsdGVyPgogICAgICAgIDwvYWN0aXZpdHk+CiAgICA8L2FwcGlicationPgo8L21hbmlmZXN0Pg==" | base64 -d > app/src/main/AndroidManifest.xml
+        echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>" > app/src/main/AndroidManifest.xml
+        echo "<manifest xmlns:android=\"http://android.com\">" >> app/src/main/AndroidManifest.xml
+        echo "    <uses-permission android:name=\"android.permission.INTERNET\" />" >> app/src/main/AndroidManifest.xml
+        echo "    <uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />" >> app/src/main/AndroidManifest.xml
+        echo "    <application android:allowBackup=\"true\" android:supportsRtl=\"true\">" >> app/src/main/AndroidManifest.xml
+        echo "        <activity android:name=\".MainActivity\" android:exported=\"true\">" >> app/src/main/AndroidManifest.xml
+        echo "            <intent-filter>" >> app/src/main/AndroidManifest.xml
+        echo "                <action android:name=\"android.intent.action.MAIN\" />" >> app/src/main/AndroidManifest.xml
+        echo "                <category android:name=\"android.intent.category.LAUNCHER\" />" >> app/src/main/AndroidManifest.xml
+        echo "            </intent-filter>" >> app/src/main/休息vity>" >> app/src/main/AndroidManifest.xml
+        echo "        </activity>" >> app/src/main/AndroidManifest.xml
+        echo "    </application>" >> app/src/main/AndroidManifest.xml
+        echo "</manifest>" >> app/src/main/AndroidManifest.xml
 
-    # Генерируем недостающий ресурс иконки, чтобы линкер ресурсов не падал
+    # Исправляем опечатку в генерации иконки
     - name: Generate Missing Icon Resources
       run: |
         mkdir -p app/src/main/res/mipmap
-        cat << 'EOF' > app/src/main/res/mipmap/ic_launcher_foreground.xml
-        <?xml version="1.0" encoding="utf-8"?>
-        <vector xmlns:android="http://github.com"
-            android:width="108dp"
-            android:height="108dp"
-            android:viewportWidth="108"
-            android:viewportHeight="108">
-            <path
-                android:fillColor="#FFFFFF"
-                android:pathData="M0,0h108v108h-108z"/>
-        </vector>
-        EOF
+        echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>" > app/src/main/res/mipmap/ic_launcher_foreground.xml
+        echo "<vector xmlns:android=\"http://android.com\"" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
+        echo "    android:width=\"108dp\"" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
+        echo "    android:height=\"108dp\"" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
+        echo "    android:viewportWidth=\"108\"" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
+        echo "    android:viewportHeight=\"108\">" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
+        echo "    <path" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
+        echo "        android:fillColor=\"#FFFFFF\"" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
+        echo "        android:pathData=\"M0,0h108v108h-108z\"/>" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
+        echo "</vector>" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
 
     - name: Generate Wrapper
       run: gradle wrapper
