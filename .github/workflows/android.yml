@@ -26,39 +26,6 @@ jobs:
       with:
         gradle-version: '8.2'
 
-    # Самый надежный способ записи манифеста без искажения двоеточий
-    - name: Create Valid AndroidManifest
-      run: |
-        mkdir -p app/src/main
-        echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>" > app/src/main/AndroidManifest.xml
-        echo "<manifest xmlns:android=\"http://android.com\">" >> app/src/main/AndroidManifest.xml
-        echo "    <uses-permission android:name=\"android.permission.INTERNET\" />" >> app/src/main/AndroidManifest.xml
-        echo "    <uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />" >> app/src/main/AndroidManifest.xml
-        echo "    <application android:allowBackup=\"true\" android:supportsRtl=\"true\">" >> app/src/main/AndroidManifest.xml
-        echo "        <activity android:name=\".MainActivity\" android:exported=\"true\">" >> app/src/main/AndroidManifest.xml
-        echo "            <intent-filter>" >> app/src/main/AndroidManifest.xml
-        echo "                <action android:name=\"android.intent.action.MAIN\" />" >> app/src/main/AndroidManifest.xml
-        echo "                <category android:name=\"android.intent.category.LAUNCHER\" />" >> app/src/main/AndroidManifest.xml
-        echo "            </intent-filter>" >> app/src/main/休息vity>" >> app/src/main/AndroidManifest.xml
-        echo "        </activity>" >> app/src/main/AndroidManifest.xml
-        echo "    </application>" >> app/src/main/AndroidManifest.xml
-        echo "</manifest>" >> app/src/main/AndroidManifest.xml
-
-    # Исправляем опечатку в генерации иконки
-    - name: Generate Missing Icon Resources
-      run: |
-        mkdir -p app/src/main/res/mipmap
-        echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>" > app/src/main/res/mipmap/ic_launcher_foreground.xml
-        echo "<vector xmlns:android=\"http://android.com\"" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
-        echo "    android:width=\"108dp\"" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
-        echo "    android:height=\"108dp\"" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
-        echo "    android:viewportWidth=\"108\"" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
-        echo "    android:viewportHeight=\"108\">" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
-        echo "    <path" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
-        echo "        android:fillColor=\"#FFFFFF\"" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
-        echo "        android:pathData=\"M0,0h108v108h-108z\"/>" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
-        echo "</vector>" >> app/src/main/res/mipmap/ic_launcher_foreground.xml
-
     - name: Generate Wrapper
       run: gradle wrapper
 
