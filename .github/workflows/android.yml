@@ -70,3 +70,4 @@ jobs:
       with:
         name: Pleer-TV-Debug-APK
         path: app/build/outputs/apk/debug/app-debug.apk
+
