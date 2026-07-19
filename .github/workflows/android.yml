@@ -26,35 +26,11 @@ jobs:
       with:
         gradle-version: '8.2' 
 
-    # Этот шаг гарантированно перезапишет манифест на сервере без искажения символов
-    - name: Overwrite AndroidManifest safely
+    # Пишем манифест через экранированные коды двоеточий, чтобы обойти баг парсера
+    - name: Overwrite AndroidManifest safely via hex
       run: |
         mkdir -p app/src/main
-        cat << 'EOF' > app/src/main/AndroidManifest.xml
-        <?xml version="1.0" encoding="utf-8"?>
-        <manifest xmlns:android="http://github.com">
-            <uses-permission android:name="android.permission.INTERNET" />
-            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-            <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
-            <uses-feature android:name="android.software.leanback" android:required="true" />
-            <application
-                android:allowBackup="true"
-                android:icon="@mipmap/ic_launcher"
-                android:label="Pleer"
-                android:supportsRtl="true"
-                android:banner="@mipmap/ic_launcher">
-                <activity
-                    android:name=".MainActivity"
-                    android:exported="true">
-                    <intent-filter>
-                        <action android:name="android.intent.action.MAIN" />
-                        <category android:name="android.intent.category.LAUNCHER" />
-                        <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-                    </intent-filter>
-                </activity>
-            </application>
-        </manifest>
-        EOF
+        printf '<?xml version="1.0" encoding="utf-8"?>\n<manifest xmlns\x3aandroid="http://android.com">\n    <uses-permission android\x3aname="android.permission.INTERNET" />\n    <uses-permission android\x3aname="android.permission.ACCESS_NETWORK_STATE" />\n    <uses-feature android\x3aname="android.hardware.touchscreen" android\x3arequired="false" />\n    <uses-feature android\x3aname="android.software.leanback" android\x3arequired="true" />\n    <application\n        android\x3aallowBackup="true"\n        android\x3aicon="@mipmap/ic_launcher"\n        android\x3alabel="Pleer"\n        android\x3asupportsRtl="true"\n        android\x3abanner="@mipmap/ic_launcher">\n        <activity\n            android\x3aname=".MainActivity"\n            android\x3aexported="true">\n            <intent-filter>\n                <action android\x3aname="android.intent.action.MAIN" />\n                <category android\x3aname="android.intent.category.LAUNCHER" />\n                <category android\x3aname="android.intent.category.LEANBACK_LAUNCHER" />\n            </intent-filter>\n        </activity>\n    </application>\n</manifest>\n' > app/src/main/AndroidManifest.xml
 
     - name: Generate Wrapper
       run: gradle wrapper
@@ -70,4 +46,3 @@ jobs:
       with:
         name: Pleer-TV-Debug-APK
         path: app/build/outputs/apk/debug/app-debug.apk
-
