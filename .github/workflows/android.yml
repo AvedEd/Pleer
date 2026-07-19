@@ -26,7 +26,7 @@ jobs:
       with:
         gradle-version: '8.2' 
 
-    # Робот создаст стерильный манифест в чистой Linux-кодировке без вашего файла
+    # Создаем идеальный манифест, исправив битую строку
     - name: Force Clean Manifest Generation
       run: |
         mkdir -p app/src/main
@@ -40,7 +40,7 @@ jobs:
         echo '                <action android:name="android.intent.action.MAIN" />' >> app/src/main/AndroidManifest.xml
         echo '                <category android:name="android.intent.category.LAUNCHER" />' >> app/src/main/AndroidManifest.xml
         echo '            </intent-filter>' >> app/src/main/AndroidManifest.xml
-        echo '        </activity>' >> app/src/main/application>' >> app/src/main/AndroidManifest.xml
+        echo '        </activity>' >> app/src/main/AndroidManifest.xml
         echo '    </application>' >> app/src/main/AndroidManifest.xml
         echo '</manifest>' >> app/src/main/AndroidManifest.xml
 
