@@ -1,0 +1,10 @@
+-dontwarn com.google.android.material.**
+-keep class com.google.android.material.** { *; }
+-dontwarn androidx.**
+-keep class androidx.** { *; }
+-dontwarn com.bumptech.glide.**
+-keep class com.bumptech.glide.** { *; }
+-dontwarn okhttp3.**
+-keep class okhttp3.** { *; }
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }

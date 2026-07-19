@@ -2,46 +2,4 @@
 <resources>
     <string name="app_name">Pleer</string>
     <string name="app_description">Медиаплеер для Android TV с поддержкой Torrserv</string>
-    
-    <!-- Main Screen -->
-    <string name="playing">▶ Playing</string>
-    <string name="paused">⏸ Paused</string>
-    <string name="buffer_indicator">Buffer: %d%%</string>
-    <string name="speed_indicator">Speed: %.1fx</string>
-    
-    <!-- Controls -->
-    <string name="play_button">▶ Play</string>
-    <string name="pause_button">⏸ Pause</string>
-    <string name="rewind_button">⏪ -10s</string>
-    <string name="fastforward_button">⏩ +10s</string>
-    <string name="browse_button">📚 Browse</string>
-    <string name="settings_button">⚙ Settings</string>
-    
-    <!-- Browser -->
-    <string name="torrserv_browser">Torrserv Browser</string>
-    <string name="search_placeholder">Search streams...</string>
-    <string name="search_button">Search</string>
-    <string name="searching">Searching...</string>
-    <string name="no_streams_found">No streams found.\nSearch to get started.</string>
-    <string name="quality_label">Quality: %s</string>
-    <string name="seeds_label">Seeds: %d</string>
-    <string name="peers_label">Peers: %d</string>
-    
-    <!-- Settings -->
-    <string name="settings_title">⚙ Settings</string>
-    <string name="torrserv_url">Torrserv Server URL</string>
-    <string name="lampa_url">Lampa Server URL</string>
-    <string name="buffer_size">Buffer Size (MB)</string>
-    <string name="cancel_button">Cancel</string>
-    <string name="save_button">Save</string>
-    
-    <!-- Errors -->
-    <string name="error_loading_streams">Failed to load streams</string>
-    <string name="error_playing_media">Error playing media</string>
-    <string name="error_torrserv_connection">Cannot connect to Torrserv</string>
-    <string name="error_lampa_connection">Cannot connect to Lampa</string>
-    
-    <!-- Messages -->
-    <string name="settings_saved">Settings saved</string>
-    <string name="playing_from_torrserv">Playing from Torrserv: %s</string>
 </resources>
