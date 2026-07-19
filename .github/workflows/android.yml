@@ -21,20 +21,37 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    # Этот шаг автоматически создаст недостающий gradlew, если его нет в репозитории
-    - name: Validate or Generate Gradle Wrapper
+    # Умный поиск папки с Android-проектом и генерация gradlew
+    - name: Locate Project and Generate Gradle Wrapper
       run: |
+        # Ищем, в какой папке лежит settings.gradle
+        TARGET_DIR=$(find . -name "settings.gradle" -o -name "settings.gradle.kts" | head -n 1 | xargs dirname)
+        
+        if [ -z "$TARGET_DIR" ] || [ "$TARGET_DIR" = "." ]; then
+          echo "Проект находится в корневой директории."
+          TARGET_DIR="."
+        else
+          echo "Проект найден в подпапке: $TARGET_DIR"
+        fi
+        
+        # Сохраняем путь для следующих шагов
+        echo "PROJECT_ROOT=$TARGET_DIR" >> $GITHUB_ENV
+        
+        # Заходим туда и генерируем gradlew
+        cd "$TARGET_DIR"
         if [ ! -f "gradlew" ]; then
-          echo "gradlew not found, generating a new one..."
+          echo "Файл gradlew не найден, генерируем новый..."
           gradle wrapper
         fi
         chmod +x gradlew
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug
+      run: |
+        cd ${{ env.PROJECT_ROOT }}
+        ./gradlew assembleDebug
 
-    - name: Upload Finished APK
+    - name: Find and Upload Finished APK
       uses: actions/upload-artifact@v4
       with:
         name: Pleer-TV-Debug-APK
-        path: app/build/outputs/apk/debug/app-debug.apk
+        path: "**/build/outputs/apk/debug/*-debug.apk" # Ищет APK в любой подпапке сборки
