@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aveded.pleer">
 
-    <!-- Разрешения: обязательно android:name -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -12,12 +11,9 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <!-- Главная активность: android:name и android:exported обязательны -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
-
-            <!-- Intent-filter: action и category с android:name -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
