@@ -1,3 +1,0 @@
-git add gradlew gradlew.bat gradle/
-git commit -m "Add Gradle wrapper"
-git push
