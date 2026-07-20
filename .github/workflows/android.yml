@@ -19,12 +19,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # Этот шаг кэширует зависимости Gradle, чтобы сборка была быстрее
+      # ГЛАВНОЕ ИСПРАВЛЕНИЕ: фиксируем версию Gradle 8.5, чтобы не было конфликта
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.5
 
-      # ГЛАВНОЕ: запускаем gradle напрямую, а не через ./gradlew
-      # --no-daemon обязателен в CI, иначе сборка может зависнуть
+      # Запускаем сборку напрямую (без gradlew)
       - name: Build with Gradle
         run: gradle assembleDebug --no-build-cache --no-daemon
 
