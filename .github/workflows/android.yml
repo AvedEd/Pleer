@@ -1,24 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.aveded.pleer">
+name: Android CI
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    </application>
-</manifest>
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build
+        run: ./gradlew assembleDebug
